@@ -1,0 +1,25 @@
+---
+title: "Introduction"
+output: html_document
+---
+
+### Data types
+
+- **Sessions**: each row represents a sleep session. The session data is expected to contain sleep onset and wakeup times
+- **Epochs**: each row represents a time epoch (e.g. 30 seconds). The epoch data is expected to contain timestamps and sleep stage annotations
+
+### Workflow
+
+1. Import data
+    - First time using nocturn? Load the **example data** to explore the app's features
+    - Supported formats: .csv, .xlsx, .xls, .edf, .rec
+    - Set column names for essential variables (e.g. timestamps, sleep onset time)
+2. Filter data
+    - Filter sessions to exclude spurious sleep events
+    - If both sessions and epochs are loaded, when sessions are filtered, the corresponding epochs are filtered as well
+3. Visualise data
+    - When sessions and epochs are filtered, the tables and visualisations are updated accordingly
+4. Export filtered data
+    - Data can be exported as **csv files** for further analysis
+    - Figures can be exported in **png**, **pdf** or **svg** formats
+    - A **sleep report** in PDF format can be generated (currently only supports Somnofy data; please open an issue if you would like a report for another type of data)
