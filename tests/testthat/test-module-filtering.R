@@ -1,19 +1,29 @@
-common <- list(
-  sessions = shiny::reactiveVal(example_sessions),
-  epochs = shiny::reactiveVal(example_epochs),
-  session_filters = shiny::reactiveVal(data.frame(no_sleep = rep(TRUE, nrow(example_sessions)))),
-  epoch_filters = shiny::reactiveVal(data.frame(from_sessions = rep(TRUE, nrow(example_epochs)))),
-  annotations = shiny::reactiveVal(data.frame(id = example_sessions$id, annotation = "", stringsAsFactors = FALSE))
-)
+common <- make_common()
 
 test_that("filtering module works", {
   shiny::testServer(
     filtering_server,
     args = list(common = common),
     {
-      session$setInputs(date_range = c("2025-04-03", "2025-04-17"), time_range = c("20", "06"), time_in_bed = 2)
+      session$setInputs(
+        date_range = c("2025-04-03", "2025-04-17"),
+        sleep_onset_range = c(as.POSIXct("2000-01-01 20:00:00"), as.POSIXct("2000-01-02 06:00:00")),
+        time_in_bed = 2
+      )
       session$flushReact()
       shiny::isolate({
+
+        expected_values <- list(
+          sleep_period = NULL,
+          date_range = c("2025-04-03", "2025-04-17"),
+          sleep_onset_range = c("20:00", "06:00"),
+          time_in_bed = 2,
+          age_range = NULL,
+          sex = NULL,
+          subject = NULL
+        )
+        expect_equal(common$filter_values(), expected_values)
+
         expected_filters <- data.frame(no_sleep = rep(TRUE, nrow(example_sessions)))
         expected_filters$no_sleep <- remove_sessions_no_sleep(common$sessions(), return_mask = TRUE)
         expected_filters$night <- filter_by_night_range(common$sessions(), "2025-04-03", "2025-04-17", return_mask = TRUE)

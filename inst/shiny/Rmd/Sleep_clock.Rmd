@@ -1,0 +1,24 @@
+---
+title: "Sleep Clock"
+output: html_document
+---
+
+##### Data source
+
+Sessions
+
+##### Required columns
+
+- `time_at_sleep_onset`
+- `time_at_wakeup`
+- `night`
+
+##### Description
+
+The Sleep Clock displays sleep onset and wake-up times on a 24h clock. Sleep onset times are shown by the purple dots, wake-up times by the orange dots. The curved lines emphasise the sleep period. The distance from clock centre to periphery indicates the night of the recording. Older recordings are towards the centre, and more recent ones towards the edge.
+
+##### Options
+
+###### Colour by
+
+Colour each session according to one of the dataset variables. Supported variable types: categorical (text), numeric and datetime.

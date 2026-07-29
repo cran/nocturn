@@ -17,7 +17,7 @@ time_diff(t1, t2, unit = "hour")
 The forward difference in the specified unit (numeric, always positive, 0 <= x < 24)
 }
 \description{
-This function returns the time from t1 to t2, always moving forward on the clock.
+Returns the time from t1 to t2, always moving forward on the clock.
 For example, from 07:00 to 22:00 is 15 hours, from 22:00 to 07:00 is 9 hours.
 }
 \examples{

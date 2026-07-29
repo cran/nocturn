@@ -10,7 +10,7 @@ get_sessions_summary(sessions)
 \item{sessions}{The sessions dataframe.}
 }
 \value{
-A single-row dataframe summarizing session information.
+A single-row dataframe summarising session information.
 }
 \description{
 Summarise session information, including the number of sessions, mean session length,

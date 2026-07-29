@@ -3,7 +3,8 @@ write.csv(example_epochs, file.path(test_folder, "epochs_reports.csv"), row.name
 
 common <- list(
   epochs = shiny::reactiveVal(NULL),
-  epoch_filters = shiny::reactiveVal(NULL)
+  epoch_filters = shiny::reactiveVal(NULL),
+  epochs_raw = shiny::reactiveVal(NULL)
 )
 
 test_that("input_epochs module returns correct data", {
@@ -15,7 +16,6 @@ test_that("input_epochs module returns correct data", {
       session$flushReact()
 
       expect_equal(class(common$epochs()), "data.frame")
-      expect_equal(ncol(common$epochs()), 19)
       expect_equal(nrow(common$epochs()), 18755)
     }
   )

@@ -1,10 +1,4 @@
-common <- list(
-  sessions = shiny::reactiveVal(example_sessions),
-  epochs = shiny::reactiveVal(example_epochs),
-  session_filters = shiny::reactiveVal(data.frame(no_sleep = rep(TRUE, nrow(example_sessions)))),
-  epoch_filters = shiny::reactiveVal(data.frame(from_sessions = rep(TRUE, nrow(example_epochs)))),
-  annotations = shiny::reactiveVal(data.frame(id = example_sessions$id, annotation = "", stringsAsFactors = FALSE))
-)
+common <- make_common()
 
 test_that("summary module works", {
   shiny::testServer(

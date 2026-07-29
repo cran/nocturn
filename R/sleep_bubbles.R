@@ -15,22 +15,21 @@
 #' plot_sleep_bubbles(example_sessions)
 plot_sleep_bubbles <- function(sessions, color_by = "default", bubble_size = 10) {
   check_session_colnames(sessions, c("sleep_period", "night"))
-  col <- get_session_colnames(sessions)
 
   sessions <- sessions |>
     remove_sessions_no_sleep() |>
-    dplyr::mutate(sleep_duration = .data[[col$sleep_period]] / 3600)
+    dplyr::mutate(sleep_duration = .data$sleep_period / 3600)
 
   if (color_by != "default" && color_by %in% names(sessions)) {
     color_var <- sessions[[color_by]]
     if (is_iso8601_datetime(color_var)) {
       color_var <- parse_time(color_var) |> update_date(date = "1970-01-01")
-      color_aes <- ggplot2::aes(x = .data[[col$night]], y = .data$sleep_duration, color = color_var)
+      color_aes <- ggplot2::aes(x = .data$night, y = .data$sleep_duration, color = color_var)
     } else if (is.numeric(color_var)) {
-      color_aes <- ggplot2::aes(x = .data[[col$night]], y = .data$sleep_duration, color = color_var)
+      color_aes <- ggplot2::aes(x = .data$night, y = .data$sleep_duration, color = color_var)
     } else {
       sessions$color_group <- as.factor(color_var)
-      color_aes <- ggplot2::aes(x = .data[[col$night]], y = .data$sleep_duration, color = .data$color_group)
+      color_aes <- ggplot2::aes(x = .data$night, y = .data$sleep_duration, color = .data$color_group)
     }
     color_scale <- get_color_scale(color_var)
   } else {
@@ -41,14 +40,14 @@ plot_sleep_bubbles <- function(sessions, color_by = "default", bubble_size = 10)
       )(sessions$sleep_duration),
       TRUE ~ "grey"
     ))
-    color_aes <- ggplot2::aes(x = .data[[col$night]], y = .data$sleep_duration, color = .data$color)
+    color_aes <- ggplot2::aes(x = .data$night, y = .data$sleep_duration, color = .data$color)
     color_scale <- ggplot2::scale_color_identity()
   }
 
   ggplot2::ggplot(sessions, color_aes) +
     ggplot2::annotate(
       "rect",
-      xmin = min(sessions[[col$night]]) - 1, xmax = max(sessions[[col$night]]) + 1,
+      xmin = min(sessions$night) - 1, xmax = max(sessions$night) + 1,
       ymin = 6, ymax = 9,
       fill = "lightgrey", alpha = 0.5
     ) +

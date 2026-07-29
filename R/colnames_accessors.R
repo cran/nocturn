@@ -92,8 +92,8 @@ get_colnames <- function(df) {
 #' @export
 #' @examples
 #' sessions <- set_colnames(
-#'  example_sessions,
-#'  list(night = "calendar_date", sleep_period = "duration_sleep")
+#'         example_sessions,
+#'         list(night = "calendar_date", sleep_period = "duration_sleep")
 #' )
 set_colnames <- function(df, col) {
   existing_col <- attr(df, "col")
@@ -103,4 +103,22 @@ set_colnames <- function(df, col) {
   }
   attr(df, "col") <- merged_col
   df
+}
+
+#' Rename sessions columns to canonical names
+#'
+#' @param df The input dataframe (sessions or epochs) to rename columns on
+#' @returns The updated dataframe with missing canonical columns created
+#' @keywords internal
+colnames_to_canonical <- function(df) {
+  col <- get_colnames(df)
+  for (canon in names(col)) {
+    src <- col[[canon]]
+
+    if (is.null(src)) next
+    if (!src %in% names(df)) next
+
+    df[[canon]] <- df[[src]]
+  }
+  set_colnames(df, col)
 }

@@ -19,8 +19,8 @@ This function updates the "col" attribute for a dataframe, overwriting existing 
 }
 \examples{
 sessions <- set_colnames(
- example_sessions,
- list(night = "calendar_date", sleep_period = "duration_sleep")
+        example_sessions,
+        list(night = "calendar_date", sleep_period = "duration_sleep")
 )
 }
 \seealso{

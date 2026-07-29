@@ -24,6 +24,7 @@ tagList(
     bslib::nav_panel("Intro", value = "intro"),
     bslib::nav_panel("Import Data", value = "import_data"),
     bslib::nav_panel("Filtering", value = "filtering"),
+    bslib::nav_panel("Comparison", value = "comparison"),
     bslib::nav_panel("Export Data", value = "export_data"),
     bslib::nav_menu("Support",
                     HTML('<a href="https://github.com/chronopsychiatry/AMBIENT-BD-nocturn/wiki" target="_blank">Wiki</a>'),
@@ -54,6 +55,10 @@ tagList(
           filtering_ui("filtering"),
         ),
         conditionalPanel(
+          condition = "input.tabs == 'comparison'",
+          comparison_side_ui("comparison"),
+        ),
+        conditionalPanel(
           condition = "input.tabs == 'export_data'",
           export_data_ui("export_data"),
         ),
@@ -75,30 +80,37 @@ tagList(
     ),
 
     # Main panel ----
-    div(
-      class = "main_panel",
+    div(class = "main_panel",
 
-      # Tabset for tables ----
-      bslib::navset_card_tab(
-        id = "main_tabs_tables",
-        bslib::nav_panel("Summary", summary_ui("summary")),
-        bslib::nav_panel("Compliance", compliance_ui("compliance"), value = "compliance_tab"),
-        bslib::nav_panel("Filtering", filtering_tab("filtering"), value = "filtering_tab"),
-        bslib::nav_panel("Annotation", annotation_ui("annotation"), value = "annotation_tab"),
-        bslib::nav_panel("Sleep Regularity", sleep_regularity_ui("sleep_regularity"), value = "sleep_regularity_tab"),
+      conditionalPanel(
+        condition = "input.tabs == 'comparison'",
+        comparison_main_ui("comparison"),
       ),
 
-      # Tabset for plots ----
-      bslib::navset_card_tab(
-        id = "main_tabs_plots",
-        bslib::nav_panel("Sleep Clock", sleep_clock_ui("sleep_clock")),
-        bslib::nav_panel("Sleep Spiral", sleep_spiral_ui("sleep_spiral")),
-        bslib::nav_panel("Sleep Onset & Wakeup", bedtimes_waketimes_ui("bedtimes_waketimes")),
-        bslib::nav_panel("Sleep Times Distributions", sleep_distributions_ui("sleep_distributions")),
-        bslib::nav_panel("Sleep Bubbles", sleep_bubbles_ui("sleep_bubbles")),
-        bslib::nav_panel("Hypnogram", hypnogram_ui("hypnogram")),
-        bslib::nav_panel("Session Timeseries", timeseries_sessions_ui("timeseries_sessions")),
-        bslib::nav_panel("Epoch Timeseries", timeseries_ui("timeseries"))
+      conditionalPanel(
+        condition = "input.tabs != 'comparison'",
+        # Tabset for tables ----
+        bslib::navset_card_tab(
+          id = "main_tabs_tables",
+          bslib::nav_panel("Summary", summary_ui("summary")),
+          bslib::nav_panel("Compliance", compliance_ui("compliance"), value = "compliance_tab"),
+          bslib::nav_panel("Filtering", filtering_tab("filtering"), value = "filtering_tab"),
+          bslib::nav_panel("Annotation", annotation_ui("annotation"), value = "annotation_tab"),
+          bslib::nav_panel("Sleep Regularity", sleep_regularity_ui("sleep_regularity"), value = "sleep_regularity_tab"),
+        ),
+
+        # Tabset for plots ----
+        bslib::navset_card_tab(
+          id = "main_tabs_plots",
+          bslib::nav_panel("Sleep Clock", sleep_clock_ui("sleep_clock")),
+          bslib::nav_panel("Sleep Spiral", sleep_spiral_ui("sleep_spiral")),
+          bslib::nav_panel("Sleep Onset & Wakeup", bedtimes_waketimes_ui("bedtimes_waketimes")),
+          bslib::nav_panel("Sleep Times Distributions", sleep_distributions_ui("sleep_distributions")),
+          bslib::nav_panel("Sleep Bubbles", sleep_bubbles_ui("sleep_bubbles")),
+          bslib::nav_panel("Hypnogram", hypnogram_ui("hypnogram")),
+          bslib::nav_panel("Session Timeseries", timeseries_sessions_ui("timeseries_sessions")),
+          bslib::nav_panel("Epoch Timeseries", timeseries_ui("timeseries"))
+        )
       )
     ),
 

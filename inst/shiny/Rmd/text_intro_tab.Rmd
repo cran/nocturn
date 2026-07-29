@@ -23,3 +23,5 @@ output: html_document
     - Data can be exported as **csv files** for further analysis
     - Figures can be exported in **png**, **pdf** or **svg** formats
     - A **sleep report** in PDF format can be generated (currently only supports Somnofy data; please open an issue if you would like a report for another type of data)
+5. Compare multiple datasets
+    - In the **Comparison** tab, load multiple Sessions datasets to be compared. Particularly useful for multiple recordings on the same night using different modalities.

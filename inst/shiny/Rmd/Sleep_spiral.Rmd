@@ -1,0 +1,23 @@
+---
+title: "Sleep Spiral"
+output: html_document
+---
+
+##### Data source
+
+Epochs
+
+##### Required columns
+
+- `timestamp`
+- `is_asleep`
+
+##### Description
+
+The sleep spiral shows when the subject was asleep (purple) or awake (orange), with epoch data resolution. The spiral starts in the centre (earliest data) and goes towards the edge (latest data). Each turn of the spiral corresponds to 24h.
+
+##### Options
+
+###### Colour by
+
+Colour each "asleep" timepoint according to one of the epoch variables. "Awake" timepoints will be shown in grey. Supported variable types: categorical (text), numeric and datetime.

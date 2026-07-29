@@ -1,6 +1,7 @@
 sleep_bubbles_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
+    help_modal_ui(ns),
     shiny::selectInput(
       inputId = ns("colorby"),
       label = "Colour by:",
@@ -34,11 +35,7 @@ sleep_bubbles_server <- function(id, common) {
       if (nrow(sessions) == 0) {
         return(NULL)
       }
-      col <- get_colnames(common$sessions())
-      shiny::validate(
-        shiny::need(!is.null(col$night), "'night' column was not specified."),
-        shiny::need(!is.null(col$sleep_period), "'sleep_period' column was not specified.")
-      )
+      validate_columns(sessions, c("night", "sleep_period"))
       plot_sleep_bubbles(
         sessions = sessions,
         color_by = input$colorby
@@ -59,5 +56,8 @@ sleep_bubbles_server <- function(id, common) {
       height = 6
     )
 
+    shiny::observeEvent(input$help, {
+      show_help_modal("Sleep_bubbles")
+    })
   })
 }

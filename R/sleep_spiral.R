@@ -13,23 +13,17 @@
 #' plot_sleep_spiral(example_epochs)
 plot_sleep_spiral <- function(epochs, color_by = "default") {
   check_epoch_colnames(epochs, c("timestamp", "is_asleep"))
-  col <- get_epoch_colnames(epochs)
 
   epochs <- epochs[seq(1, nrow(epochs), by = 5), ] # Downsampling to 5 min intervals to speed up plotting
 
-  reference_time <- epochs[[col$timestamp]] |>
-    parse_time() |>
-    min() |>
+  reference_time <- min(epochs$timestamp) |>
     lubridate::floor_date(unit = "day")
 
   epochs <- epochs |>
-    dplyr::mutate(
-      timestamp = parse_time(.data[[col$timestamp]]),
-      is_asleep = as.character(.data[[col$is_asleep]])
-    ) |>
+    dplyr::mutate(is_asleep = as.logical(.data$is_asleep)) |>
     tidyr::complete(
       timestamp = seq(min(.data$timestamp), max(.data$timestamp), by = "2 min"),
-      fill = list(is_asleep = "0")
+      fill = list(is_asleep = FALSE)
     ) |>
     dplyr::mutate(
       time_in_days = as.numeric(difftime(.data$timestamp, reference_time, units = "days")),
@@ -42,31 +36,40 @@ plot_sleep_spiral <- function(epochs, color_by = "default") {
   if (color_by != "default" && color_by %in% names(epochs)) {
     color_var <- epochs[[color_by]]
     if (is_iso8601_datetime(color_var)) {
-      color_var <- parse_time(color_var)
-      color_aes <- ggplot2::aes(color = color_var)
+      epochs$plot_color <- ifelse(
+        epochs$is_asleep,
+        parse_time(color_var),
+        NA
+      )
+      color_aes <- ggplot2::aes(color = .data$plot_color)
       color_scale <- ggplot2::scale_color_gradientn(
         colours = grDevices::hcl.colors(100, "viridis"),
-        labels = function(x) format(as.POSIXct(x, origin = "1970-01-01", tz = "UTC"), "%H:%M")
+        labels = function(x) format(as.POSIXct(x, origin = "1970-01-01", tz = "UTC"), "%H:%M"),
+        na.value = "grey"
       )
     } else if (is.numeric(color_var)) {
-      color_aes <- ggplot2::aes(color = color_var)
+      epochs$plot_color <- ifelse(
+        epochs$is_asleep,
+        color_var,
+        NA
+      )
+      color_aes <- ggplot2::aes(color = .data$plot_color)
       color_scale <- ggplot2::scale_color_gradientn(
-        colours = grDevices::hcl.colors(100, "viridis")
+        colours = grDevices::hcl.colors(100, "viridis"),
+        na.value = "grey"
       )
     } else {
       epochs$color_group <- as.factor(color_var)
       color_levels <- levels(epochs$color_group)
       color_map <- stats::setNames(scales::hue_pal()(length(color_levels)), color_levels)
-      # Orange for awake, colormap for others
       epochs$plot_color <- ifelse(
-        epochs$is_asleep == "0",
-        "Awake",
-        as.character(epochs$color_group)
+        epochs$is_asleep,
+        as.character(epochs$color_group),
+        NA
       )
-      color_values <- c(stats::setNames("lightgrey", "Awake"), color_map)
       color_aes <- ggplot2::aes(color = .data$plot_color)
       color_scale <- ggplot2::scale_color_manual(
-        values = color_values,
+        values = color_map,
         breaks = names(color_map),
         labels = names(color_map),
         na.value = "grey"
@@ -74,15 +77,15 @@ plot_sleep_spiral <- function(epochs, color_by = "default") {
     }
   } else {
     # Default: original colors
-    epochs$plot_color <- epochs$is_asleep
+    epochs$plot_color <- ifelse(epochs$is_asleep, "Asleep", "Awake")
     color_values <- c(
-      "0" = "orange", # Awake
-      "1" = "purple" # Asleep
+      "Awake" = "orange", # Awake
+      "Asleep" = "purple" # Asleep
     )
     color_aes <- ggplot2::aes(color = .data$plot_color)
     color_scale <- ggplot2::scale_color_manual(
       values = color_values,
-      breaks = c("0", "1"),
+      breaks = c("Awake", "Asleep"),
       labels = c("Awake", "Asleep"),
       na.value = "grey"
     )

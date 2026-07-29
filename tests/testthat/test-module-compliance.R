@@ -9,7 +9,7 @@ test_that("compliance module works", {
     compliance_server,
     args = list(common = common),
     {
-      expect_warning(session$flushReact())
+      expect_warning(session$flushReact())  # Expecting app warning "there are nights with multiple sessions"
       expect_equal(
         compliance_table(),
         get_compliance_table(common)

@@ -1,4 +1,9 @@
 [![DOI](https://zenodo.org/badge/956490777.svg)](https://doi.org/10.5281/zenodo.20067661)
+[![](https://cranlogs.r-pkg.org/badges/last-month/nocturn)](https://cran.r-project.org/package=nocturn)
+[![Codecov test coverage](https://codecov.io/gh/chronopsychiatry/AMBIENT-BD-nocturn/graph/badge.svg)](https://app.codecov.io/gh/chronopsychiatry/AMBIENT-BD-nocturn)
+[![R-CMD-check](https://github.com/chronopsychiatry/AMBIENT-BD-nocturn/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/chronopsychiatry/AMBIENT-BD-nocturn/actions/workflows/R-CMD-check.yaml)
+
+
 
 # nocturn <img src="man/figures/logo.png" align="right" height="138" alt="nocturn hex logo" />
 
@@ -28,7 +33,7 @@ If you do not wish to upload your data to our servers, you can run the nocturn a
 
 ## Running nocturn locally
 
-If you wish to run the app locally, or to use the R package, please follow the [installation instructions](https://github.com/chronopsychiatry/AMBIENT-BD-nocturn/wiki/Installation) and [how to get started](https://github.com/chronopsychiatry/AMBIENT-BD-nocturn/wiki/Getting-started).
+To run the app locally or use the R package, nocturn can be installed from CRAN. See [installation instructions](https://github.com/chronopsychiatry/AMBIENT-BD-nocturn/wiki/Installation) and [how to get started](https://github.com/chronopsychiatry/AMBIENT-BD-nocturn/wiki/Getting-started) for more details.
 
 The [changelog](https://github.com/chronopsychiatry/AMBIENT-BD-nocturn/blob/main/NEWS.md) contains information about changes made in each version. Generally, it is preferable to run the latest version of the package, as each version will contain bug fixes and improvements.
 
@@ -43,3 +48,5 @@ To make suggestions or discuss how to use the app or package, [start a new discu
 Maintainer: [daniel.thedie@ed.ac.uk](mailto:daniel.thedie@ed.ac.uk)
 
 nocturn is developed by the [BioRDM team](https://biology.ed.ac.uk/research/facilities/research-data-management) at the University of Edinburgh, as part of the [Ambient-BD project](https://www.ambientbd.com/).
+
+This work was supported by Wellcome trust grant [226944/Z/23/Z](https://doi.org/10.35802/226944) awarded to Prof. Andrew Millar and others.

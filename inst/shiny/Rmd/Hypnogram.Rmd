@@ -1,0 +1,17 @@
+---
+title: "Hypnogram"
+output: html_document
+---
+
+##### Data source
+
+Epochs
+
+##### Required columns
+
+- `timestamp`
+- `sleep_stage`
+
+##### Description
+
+Shows the different sleep stages obtained from Epoch data.

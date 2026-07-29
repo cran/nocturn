@@ -1,7 +1,7 @@
 hypnogram_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
-    shiny::HTML("<b>Requires Epoch data</b>"),
+    help_modal_ui(ns),
     shiny::plotOutput(ns("hypnogram_plot")),
     shiny::downloadButton(
       outputId = ns("download_plot"),
@@ -26,11 +26,7 @@ hypnogram_server <- function(id, common) {
       if (nrow(epochs) == 0) {
         return(NULL)
       }
-      col <- get_colnames(common$epochs())
-      shiny::validate(
-        shiny::need(!is.null(col$timestamp), "'timestamp' column was not specified."),
-        shiny::need(!is.null(col$sleep_stage), "'sleep_stage' column was not specified.")
-      )
+      validate_columns(epochs, c("timestamp", "sleep_stage"))
       plot_hypnogram(epochs = epochs)
     })
 
@@ -48,5 +44,8 @@ hypnogram_server <- function(id, common) {
       height = 6
     )
 
+    shiny::observeEvent(input$help, {
+      show_help_modal("Hypnogram")
+    })
   })
 }

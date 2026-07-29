@@ -1,0 +1,33 @@
+---
+title: "Sleep Onset and Wakeup"
+output: html_document
+---
+
+##### Data source
+
+Sessions
+
+##### Required columns
+
+- `time_at_sleep_onset`
+- `time_at_wakeup`
+- `night`
+- `is_workday`
+
+##### Description
+
+Displays horizontal bars showing average sleep onset and wakeup times. This plot is very sensitive to daytime sessions, so it is recommended to make sure there are no duplicate sessions first (see Compliance tab).
+
+##### Options
+
+###### Group by
+
+Whether to average the sleep onset and wakeup times. Possible values are:
+
+- night: averages all sessions per night (if there are no duplicate sessions, this will be a single session per night). The plot can get quite large if there is a lot of data.
+- weekday: averages sessions per day of the week (Monday to Sunday)
+- workday: averages sessions for week days vs. weekend, as defined in the `is_workday` column of the Session data. If `is_workday` hasn't been defined, it is inferred from `night`, assuming work days are Monday-Friday and weekends are Saturday-Sunday.
+
+###### Colour by
+
+Colour each session according to one of the dataset variables. Supported variable types: categorical (text), numeric and datetime. At present, this is only possible when "Group by" is set to "night". If there are multiple sessions per night, only the longest one will be kept.

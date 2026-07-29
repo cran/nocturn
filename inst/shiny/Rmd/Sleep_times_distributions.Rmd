@@ -1,0 +1,41 @@
+---
+title: "Sleep Times Distributions"
+output: html_document
+---
+
+##### Data source
+
+Sessions
+
+##### Required columns
+
+- `time_at_sleep_onset`
+- `time_at_midsleep`
+- `time_at_wakeup`
+- `sleep_period`
+
+##### Description
+
+Displays distributions for sleep onset, midsleep and wakeup times. Metrics (e.g. median and quartiles) are computed circularly.
+
+##### Options
+
+###### Plot Type
+
+How to plot the distributions. Possible values:
+
+- Boxplot: a simple boxplot with no whiskers. Middle line shows the median, boxes extend from first to third quartile
+- Histogram: a histogram
+- Density: a kernel density estimate (KDE) of the distributions. Dashed line shows the median value.
+
+###### Circular
+
+Whether to show the current plot as a 24h circular plot. Works with all plot types.
+
+###### Binwidth (histrogram)
+
+The bin width (in hours) for the histogram. Default: 0.25.
+
+###### Adjust (density)
+
+The adjust factor for the kernel density estimates. Higher values will result in thinner peaks. Default: 1.

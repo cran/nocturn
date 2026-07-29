@@ -22,26 +22,25 @@ sleep_report <- function(sessions, title = "", output_file = "Sleep_report.pdf")
 
   check_session_colnames(sessions, c("night", "time_at_sleep_onset", "time_at_wakeup", "time_at_midsleep",
                                      "sleep_onset_latency", "sleep_period", "time_in_bed"))
-  col <- get_session_colnames(sessions)
 
-  dates <- format(c(min(sessions[[col$night]]), max(sessions[[col$night]])), "%d/%m/%Y")
+  dates <- format(c(min(sessions$night), max(sessions$night)), "%d/%m/%Y")
 
   sessions <- remove_sessions_no_sleep(sessions)
 
   # Stats: Time to fall asleep, sleep efficiency, chronotype, Sleep Regularity (based on midsleep standard deviation)
   stats <- list()
-  stats$time_to_fall_asleep <- round(mean(sessions[[col$sleep_onset_latency]], na.rm = TRUE) / 60)
-  stats$sleep_efficiency <- round(mean(sessions[[col$sleep_period]], na.rm = TRUE) / mean(sessions[[col$time_in_bed]], na.rm = TRUE) * 100)
+  stats$time_to_fall_asleep <- round(mean(sessions$sleep_onset_latency, na.rm = TRUE) / 60)
+  stats$sleep_efficiency <- round(mean(sessions$sleep_period, na.rm = TRUE) / mean(sessions$time_in_bed, na.rm = TRUE) * 100)
   stats$chronotype <- ifelse(chronotype(sessions = sessions) < 4.25, "Morning Lark", "Evening Owl")
   stats$chronotype_image <- ifelse(stats$chronotype == "Morning Lark",
     "Morning_Lark.jpg",
     "Evening_Owl.JPG"
   )
   stats$chronotype_credit <- ifelse(stats$chronotype == "Morning Lark",
-    "Artemy Voikhansky - Own work, CC BY-SA 4.0",
-    "Charles J. Sharp - Own work, CC BY-SA 4.0"
+    "Artemy Voikhansky, CC BY-SA 4.0",
+    "Charles J. Sharp, CC BY-SA 4.0"
   )
-  stats$sleep_regularity <- round(100 * (1 - sd_time(sessions[[col$time_at_midsleep]]) / 2))
+  stats$sleep_regularity <- round(100 * (1 - sd_time(sessions$time_at_midsleep) / 2))
   stats$social_jet_lag <- round(social_jet_lag(sessions = sessions), 2)
 
   clock_plot <- plot_sleep_clock(sessions) +
@@ -111,12 +110,11 @@ sleep_report <- function(sessions, title = "", output_file = "Sleep_report.pdf")
 
 #' @importFrom rlang .data
 sleep_duration_distribution <- function(sessions, adjust = 1) {
-  col <- get_session_colnames(sessions)
 
   plot_data <- sessions |>
     remove_sessions_no_sleep() |>
-    dplyr::filter(!is.na(.data[[col$sleep_period]])) |>
-    dplyr::mutate(sleep_period = as.numeric(.data[[col$sleep_period]]) / 3600)
+    dplyr::filter(!is.na(.data$sleep_period)) |>
+    dplyr::mutate(sleep_period = as.numeric(.data$sleep_period) / 3600)
 
   ggplot2::ggplot(plot_data, ggplot2::aes(x = .data$sleep_period)) +
     ggplot2::geom_histogram(

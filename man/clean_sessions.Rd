@@ -16,6 +16,5 @@ The cleaned-up sessions dataframe
 Clean session data
 }
 \examples{
-sessions <- clean_sessions(nocturn::example_sessions)
 clean_sessions(example_sessions)
 }

@@ -1,6 +1,7 @@
 sleep_distributions_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
+    help_modal_ui(ns),
     shiny::fluidRow(
       shiny::column(4,
         shiny::selectInput(
@@ -70,12 +71,9 @@ sleep_distributions_server <- function(id, common) {
       col <- get_colnames(common$sessions())
       sessions <- apply_filters(common$sessions(), common$session_filters()) |>
         annotate(common$annotations())
+      validate_columns(sessions, c("time_at_sleep_onset", "time_at_midsleep", "time_at_wakeup", "sleep_period"))
       shiny::validate(
-        shiny::need(!is.null(col$time_at_sleep_onset), "'time_at_sleep_onset' column was not specified."),
-        shiny::need(!is.null(col$time_at_midsleep), "'time_at_midsleep' column was not specified."),
-        shiny::need(!is.null(col$time_at_wakeup), "'time_at_wakeup' column was not specified."),
-        shiny::need(!is.null(col$sleep_period), "'sleep_period' column was not specified."),
-        shiny::need(nrow(sessions) > 0, "")
+        shiny::need(nrow(sessions) > 0, message = FALSE)
       )
       switch(input$plot_type,
         "Boxplot" = {
@@ -105,5 +103,9 @@ sleep_distributions_server <- function(id, common) {
       width = 12,
       height = 6
     )
+
+    shiny::observeEvent(input$help, {
+      show_help_modal("Sleep_times_distributions")
+    })
   })
 }

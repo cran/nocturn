@@ -16,13 +16,13 @@
 #' plot_timeseries(example_epochs, variable="signal_quality_mean")
 plot_timeseries <- function(epochs, variable, color_by = "default", exclude_zero = FALSE) {
   check_epoch_colnames(epochs, c("timestamp", "night"))
-  col <- get_epoch_colnames(epochs)
 
-  color_by <- if (color_by %in% colnames(epochs)) color_by else "night"
+  color_by <- if (color_by %in% names(epochs)) color_by else "night"
 
   if (exclude_zero) {
     epochs <- epochs |>
-      dplyr::filter(.data[[variable]] != 0)
+      dplyr::filter(.data[[variable]] != 0) |>
+      dplyr::filter(.data[[color_by]] != 0)
   }
 
   if (is_iso8601_datetime(epochs[[variable]])) {
@@ -38,33 +38,33 @@ plot_timeseries <- function(epochs, variable, color_by = "default", exclude_zero
     if (is_iso8601_datetime(color_var)) {
       color_var <- parse_time(color_var) |> update_date(date = "1970-01-01")
       color_aes <- ggplot2::aes(
-        x = time_to_hours(shift_times_by_12h(.data[[col$timestamp]])),
+        x = time_to_hours(shift_times_by_12h(.data$timestamp)),
         y = .data$variable,
         color = color_var,
-        group = .data[[col$night]]
+        group = .data$night
       )
     } else if (is.numeric(color_var)) {
       color_aes <- ggplot2::aes(
-        x = time_to_hours(shift_times_by_12h(.data[[col$timestamp]])),
+        x = time_to_hours(shift_times_by_12h(.data$timestamp)),
         y = .data$variable,
         color = color_var,
-        group = .data[[col$night]]
+        group = .data$night
       )
     } else {
       epochs$color_group <- as.factor(color_var)
       color_aes <- ggplot2::aes(
-        x = time_to_hours(shift_times_by_12h(.data[[col$timestamp]])),
+        x = time_to_hours(shift_times_by_12h(.data$timestamp)),
         y = .data$variable,
         color = .data$color_group,
-        group = .data[[col$night]]
+        group = .data$night
       )
     }
     color_scale <- get_color_scale(color_var)
   } else {
     color_aes <- ggplot2::aes(
-      x = time_to_hours(shift_times_by_12h(.data[[col$timestamp]])),
+      x = time_to_hours(shift_times_by_12h(.data$timestamp)),
       y = .data$variable,
-      group = .data[[col$night]]
+      group = .data$night
     )
     color_scale <- ggplot2::scale_color_manual(values = "black", guide = "none")
   }
@@ -112,11 +112,15 @@ plot_timeseries <- function(epochs, variable, color_by = "default", exclude_zero
 #' plot_timeseries_sessions(example_sessions, variable="time_at_midsleep")
 plot_timeseries_sessions <- function(sessions, variable, color_by = "default", exclude_zero = FALSE) {
   check_session_colnames(sessions, c("night"))
-  col <- get_session_colnames(sessions)
 
   if (exclude_zero) {
     sessions <- sessions |>
       dplyr::filter(.data[[variable]] != 0)
+
+    if (color_by != "default") {
+      sessions <- sessions |>
+        dplyr::filter(.data[[color_by]] != 0)
+    }
   }
 
   if (is_iso8601_datetime(sessions[[variable]])) {
@@ -131,16 +135,16 @@ plot_timeseries_sessions <- function(sessions, variable, color_by = "default", e
     color_var <- sessions[[color_by]]
     if (is_iso8601_datetime(color_var)) {
       color_var <- parse_time(color_var) |> update_date(date = "1970-01-01")
-      color_aes <- ggplot2::aes(x = .data[[col$night]], y = .data$variable, color = color_var)
+      color_aes <- ggplot2::aes(x = .data$night, y = .data$variable, color = color_var)
     } else if (is.numeric(color_var)) {
-      color_aes <- ggplot2::aes(x = .data[[col$night]], y = .data$variable, color = color_var)
+      color_aes <- ggplot2::aes(x = .data$night, y = .data$variable, color = color_var)
     } else {
       sessions$color_group <- as.factor(color_var)
-      color_aes <- ggplot2::aes(x = .data[[col$night]], y = .data$variable, color = .data$color_group)
+      color_aes <- ggplot2::aes(x = .data$night, y = .data$variable, color = .data$color_group)
     }
     color_scale <- get_color_scale(color_var)
   } else {
-    color_aes <- ggplot2::aes(x = .data[[col$night]], y = .data$variable)
+    color_aes <- ggplot2::aes(x = .data$night, y = .data$variable)
     color_scale <- ggplot2::scale_color_manual(values = "black", guide = "none")
   }
 

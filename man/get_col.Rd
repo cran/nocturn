@@ -20,6 +20,7 @@ If the column does not exist or is NULL, it returns a vector of NULLs of the sam
 }
 \examples{
 get_col(example_sessions, "session_start")
+get_col(example_sessions, "this_col_does_not_exist")
 }
 \seealso{
 Other internal:

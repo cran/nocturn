@@ -19,34 +19,13 @@ test_that("check_session_colnames passes when it should", {
   ))
 })
 
-test_that("check_session_colnames fails when columns are not set", {
+test_that("check_session_colnames fails when columns are missing", {
   expect_error(
     check_session_colnames(
       sessions,
       required_cols = c("subject_id", "session_end")
     ),
-    regexp = "Some required column names have not been set"
-  )
-})
-
-test_that("setting and checking a non-standard session colname passes", {
-  sessions <- sessions |>
-    set_colnames(list(session_end = "end_of_session"))
-  expect_no_error(check_session_colnames(
-    sessions,
-    required_cols = c("session_end")
-  ))
-})
-
-test_that("check_session_colnames fails when columns are set but missing in data", {
-  sessions <- sessions |>
-    set_colnames(list(time_at_sleep_onset = "time_at_sleep_onset"))
-  expect_error(
-    check_session_colnames(
-      sessions,
-      required_cols = c("time_at_sleep_onset")
-    ),
-    regexp = "Some column names were set but are not present in the session data"
+    regexp = "Some columns are not present in the session data"
   )
 })
 
@@ -59,33 +38,12 @@ test_that("check_epoch_colnames passes when it should", {
   ))
 })
 
-test_that("check_epoch_colnames fails when columns are not set", {
+test_that("check_epoch_colnames fails when columns are missing", {
   expect_error(
     check_epoch_colnames(
       epochs,
       required_cols = c("session_id", "is_asleep")
     ),
-    regexp = "Some required epoch column names have not been set"
-  )
-})
-
-test_that("setting and checking a non-standard epoch colname passes", {
-  epochs <- epochs |>
-    set_colnames(list(is_asleep = "sleeping"))
-  expect_no_error(check_epoch_colnames(
-    epochs,
-    required_cols = c("is_asleep")
-  ))
-})
-
-test_that("check_epoch_colnames fails when columns are set but missing in data", {
-  epochs <- epochs |>
-    set_colnames(list(sleep_stage = "sleep_stage"))
-  expect_error(
-    check_epoch_colnames(
-      epochs,
-      required_cols = c("sleep_stage")
-    ),
-    regexp = "Some column names were set but are not present in the epoch data"
+    regexp = "Some columns are not present in the epoch data"
   )
 })

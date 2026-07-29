@@ -291,20 +291,19 @@ sleeptimes_density <- function(sessions, adjust = 1, circular = FALSE) {
 
 #' @importFrom rlang .data
 prepare_sleeptimes_data <- function(sessions) {
-  col <- get_session_colnames(sessions)
   sessions <- remove_sessions_no_sleep(sessions)
   plot_data <- tidyr::pivot_longer(
     sessions,
-    cols = dplyr::all_of(c(col$time_at_sleep_onset, col$time_at_midsleep, col$time_at_wakeup)),
+    cols = dplyr::all_of(c("time_at_sleep_onset", "time_at_midsleep", "time_at_wakeup")),
     names_to = "variable",
     values_to = "time"
   ) |>
     dplyr::mutate(
       time = parse_time(.data$time),
       variable = dplyr::case_when(
-        .data$variable == col$time_at_sleep_onset ~ "Sleep Onset",
-        .data$variable == col$time_at_midsleep ~ "Midsleep",
-        .data$variable == col$time_at_wakeup ~ "Wakeup"
+        .data$variable == "time_at_sleep_onset" ~ "Sleep Onset",
+        .data$variable == "time_at_midsleep" ~ "Midsleep",
+        .data$variable == "time_at_wakeup" ~ "Wakeup"
       ),
       hour = time_to_hours(shift_times_by_12h(.data$time))
     )

@@ -1,5 +1,6 @@
 test_that("get_sessions_summary works correctly with valid input", {
   sessions <- data.frame(
+    id = c(1, 2),
     time_at_sleep_onset = c("2025-04-01T22:00:00", "2025-04-01T23:00:00"),
     time_at_wakeup = c("2025-04-02T06:00:00", "2025-04-02T07:00:00"),
     time_in_bed = c(28800, 28800),

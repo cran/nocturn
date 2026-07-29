@@ -66,6 +66,5 @@ export_data_server <- function(id, common) {
         title = shiny::reactive(input$title)
       )
     })
-
   })
 }

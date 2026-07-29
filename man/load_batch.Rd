@@ -7,7 +7,6 @@
 load_batch(
   folder_path = NULL,
   file_list = NULL,
-  file_names = NULL,
   pattern = NULL,
   type = "sessions"
 )
@@ -16,8 +15,6 @@ load_batch(
 \item{folder_path}{The path to the folder containing session files (do not use with file_list)}
 
 \item{file_list}{The list of file paths to load (do not use with folder_path)}
-
-\item{file_names}{An optional vector of file names corresponding to the files in file_list}
 
 \item{pattern}{An optional pattern to filter files in the folder}
 

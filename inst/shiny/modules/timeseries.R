@@ -1,7 +1,7 @@
 timeseries_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
-    shiny::HTML("<b>Requires Epoch data</b>"),
+    help_modal_ui(ns),
     shiny::fluidRow(
       shiny::column(4,
         shiny::selectInput(
@@ -48,11 +48,7 @@ timeseries_server <- function(id, common) {
     timeseries_plot <- shiny::reactive({
       shiny::req(input$variable, common$epochs(), common$epoch_filters())
       epochs <- apply_filters(common$epochs(), common$epoch_filters())
-      col <- get_colnames(common$epochs())
-      shiny::validate(
-        shiny::need(!is.null(col$timestamp), "'timestamp' column was not specified."),
-        shiny::need(!is.null(col$night), "'night' column was not specified.")
-      )
+      validate_columns(epochs, c("timestamp", "night"))
       plot_timeseries(
         epochs = epochs,
         variable = input$variable,
@@ -75,5 +71,8 @@ timeseries_server <- function(id, common) {
       height = 6
     )
 
+    shiny::observeEvent(input$help, {
+      show_help_modal("Epoch_timeseries")
+    })
   })
 }

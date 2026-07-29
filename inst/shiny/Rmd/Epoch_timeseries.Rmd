@@ -1,0 +1,31 @@
+---
+title: "Epoch timeseries"
+output: html_document
+---
+
+##### Data source
+
+Epochs
+
+##### Required columns
+
+- `night`
+- `timestamp`
+
+##### Description
+
+Timeseries plot on a 24h time window for any of the Epoch variables. Shows one dot per epoch. By default, dots are coloured by night.
+
+##### Options
+
+###### Variable
+
+Variable to be plotted (y-axis). Supported variable types: categorical (text), numeric and datetime.
+
+###### Colour by
+
+Colour each session according to one of the dataset variables. Supported variable types: categorical (text), numeric and datetime.
+
+###### Exclude Zero Values
+
+When ticked, any point whose value is exactly 0 will be removed (useful when zeroes are spurious values or absence of data).

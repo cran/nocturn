@@ -14,16 +14,15 @@
 #' plot_sleep_clock(example_sessions)
 plot_sleep_clock <- function(sessions, color_by = "default") {
   check_session_colnames(sessions, c("time_at_sleep_onset", "time_at_wakeup", "night"))
-  col <- get_session_colnames(sessions)
 
   sessions$session_idx <- seq_len(nrow(sessions))
 
   sessions <- sessions |>
-    dplyr::filter(!is.na(.data[[col$time_at_sleep_onset]]) & !is.na(.data[[col$time_at_wakeup]])) |>
+    dplyr::filter(!is.na(.data$time_at_sleep_onset) & !is.na(.data$time_at_wakeup)) |>
     dplyr::mutate(
-      sleep_onset_hour = time_to_hours(.data[[col$time_at_sleep_onset]]),
-      wakeup_hour = time_to_hours(.data[[col$time_at_wakeup]]),
-      night = as.factor(.data[[col$night]])
+      sleep_onset_hour = time_to_hours(.data$time_at_sleep_onset),
+      wakeup_hour = time_to_hours(.data$time_at_wakeup),
+      night = as.factor(.data$night)
     )
 
   sleep_onset_data <- sessions |>

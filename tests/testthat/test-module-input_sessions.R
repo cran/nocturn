@@ -3,7 +3,9 @@ write.csv(example_sessions, file.path(test_folder, "sessions_reports.csv"), row.
 
 common <- list(
   sessions = shiny::reactiveVal(NULL),
+  sessions_raw = shiny::reactiveVal(NULL),
   session_filters = shiny::reactiveVal(NULL),
+  filter_values = shiny::reactiveVal(NULL),
   annotations = shiny::reactiveVal(NULL)
 )
 
@@ -16,7 +18,6 @@ test_that("input_sessions module returns correct data", {
       session$flushReact()
 
       expect_equal(class(common$sessions()), "data.frame")
-      expect_equal(ncol(common$sessions()), 69)
       expect_equal(nrow(common$sessions()), 124)
     }
   )

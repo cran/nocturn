@@ -43,32 +43,24 @@ sleep_regularity_server <- function(id, common) {
     )
 
     metric_values_sessions <- shiny::reactive({
-      col <- get_colnames(common$sessions())
-      shiny::validate(
-        shiny::need(!is.null(col$time_at_midsleep), "'time_at_midsleep' column was not specified."),
-        shiny::need(!is.null(col$is_workday), "'is_workday' column was not specified."),
-        shiny::need(!is.null(col$night), "'night' column was not specified."),
-        shiny::need(!is.null(col$sleep_period), "'sleep_period' column was not specified.")
-      )
-      if (is.null(sessions()) || nrow(sessions()) == 0) return(rep(NA, length(metric_names_sessions)))
+      s <- sessions()
+      validate_columns(s, c("time_at_midsleep", "is_workday", "night", "sleep_period"))
+      if (is.null(s) || nrow(s) == 0) return(rep(NA, length(metric_names_sessions)))
       c(
-        sd_time(sessions()[[col$time_at_midsleep]], unit = "hour"),
-        social_jet_lag(sessions()),
-        composite_phase_deviation(sessions()),
-        chronotype(sessions())
+        sd_time(s$time_at_midsleep, unit = "hour"),
+        social_jet_lag(s),
+        composite_phase_deviation(s),
+        chronotype(s)
       )
     })
 
     metric_values_epochs <- shiny::reactive({
-      col <- get_colnames(common$epochs())
-      shiny::validate(
-        shiny::need(!is.null(col$timestamp), "'timestamp' column was not specified."),
-        shiny::need(!is.null(col$is_asleep), "'is_asleep' column was not specified."),
-      )
-      if (is.null(epochs()) || nrow(epochs()) == 0) return(rep(NA, length(metric_names_epochs)))
+      e <- epochs()
+      validate_columns(e, c("timestamp", "is_asleep"))
+      if (is.null(e) || nrow(e) == 0) return(rep(NA, length(metric_names_epochs)))
       c(
-        interdaily_stability(epochs()),
-        sleep_regularity_index(epochs())
+        interdaily_stability(e),
+        sleep_regularity_index(e)
       )
     })
 
@@ -144,18 +136,5 @@ sleep_regularity_server <- function(id, common) {
     shiny::observeEvent(input$metric_chronotype, {
       show_metric_modal("Chronotype")
     })
-
-    show_metric_modal <- function(metric_name) {
-      rmd_path <- system.file("shiny", package = "nocturn")
-      shiny::showModal(
-        shiny::modalDialog(
-          title = gsub("_", " ", metric_name),
-          size = "l",
-          shiny::includeMarkdown(paste0(rmd_path, "/Rmd/", metric_name, ".Rmd")),
-          easyClose = TRUE,
-          footer = shiny::modalButton("Close")
-        )
-      )
-    }
   })
 }

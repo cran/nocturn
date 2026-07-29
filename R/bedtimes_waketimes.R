@@ -18,9 +18,8 @@ plot_bedtimes_waketimes <- function(sessions, groupby = "night", color_by = "def
   check_session_colnames(sessions, c("night", "time_at_sleep_onset", "time_at_wakeup", "is_workday"))
   if (color_by != "default") {
     groupby <- "night"
+    sessions <- keep_longest(sessions)
   }
-
-  col <- get_session_colnames(sessions)
 
   expansion_factor <- switch(
     groupby,
@@ -31,24 +30,20 @@ plot_bedtimes_waketimes <- function(sessions, groupby = "night", color_by = "def
   Sys.setlocale("LC_TIME", "C") # Ensure weekday names are in English
 
   plot_data <- sessions |>
-    dplyr::filter(!is.na(.data[[col$time_at_sleep_onset]]) & !is.na(.data[[col$time_at_wakeup]])) |>
-    dplyr::mutate(
-      time_at_sleep_onset = parse_time(.data[[col$time_at_sleep_onset]]),
-      time_at_wakeup = parse_time(.data[[col$time_at_wakeup]])
-    ) |>
+    dplyr::filter(!is.na(.data$time_at_sleep_onset) & !is.na(.data$time_at_wakeup)) |>
     dplyr::mutate(
       group = switch(
         groupby,
-        night = .data[[col$night]],
+        night = .data$night,
         workday = factor(
-          ifelse(.data[[col$is_workday]], "Weekday", "Weekend"),
+          ifelse(.data$is_workday, "Weekday", "Weekend"),
           levels = c("Weekend", "Weekday")
         ),
         weekday = factor(
-          lubridate::as_date(.data[[col$night]]) |> weekdays(),
+          weekdays(.data$night),
           levels = c("Sunday", "Saturday", "Friday", "Thursday", "Wednesday", "Tuesday", "Monday")
         ),
-        .data[[col$night]]
+        .data$night
       )
     ) |>
     dplyr::group_by(.data$group) |>

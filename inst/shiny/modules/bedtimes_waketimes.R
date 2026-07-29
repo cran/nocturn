@@ -1,6 +1,7 @@
 bedtimes_waketimes_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
+    help_modal_ui(ns),
     shiny::fluidRow(
       shiny::column(4,
         shiny::selectInput(
@@ -59,13 +60,8 @@ bedtimes_waketimes_server <- function(id, common) {
       if (nrow(sessions) == 0) {
         return(NULL)
       }
-      col <- get_colnames(common$sessions())
-      shiny::validate(
-        shiny::need(!is.null(col$time_at_sleep_onset), "'time_at_sleep_onset' column was not specified."),
-        shiny::need(!is.null(col$time_at_wakeup), "'time_at_wakeup' column was not specified."),
-        shiny::need(!is.null(col$night), "'night' column was not specified."),
-        shiny::need(!is.null(col$is_workday), "'is_workday' column was not specified.")
-      )
+      validate_columns(sessions, c("time_at_sleep_onset", "time_at_wakeup", "night", "is_workday"))
+
       plot_bedtimes_waketimes(
         sessions = sessions,
         groupby = input$groupby,
@@ -86,6 +82,10 @@ bedtimes_waketimes_server <- function(id, common) {
       width = 8,
       height = 6
     )
+
+    shiny::observeEvent(input$help, {
+      show_help_modal("Sleep_onset_and_wakeup")
+    })
 
   })
 }

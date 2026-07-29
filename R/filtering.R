@@ -19,24 +19,13 @@
 filter_epochs_from_sessions <- function(epochs, sessions, return_mask = FALSE) {
   check_session_colnames(sessions, "id")
   check_epoch_colnames(epochs, "session_id")
-  scol <- get_session_colnames(sessions)
-  ecol <- get_epoch_colnames(epochs)
 
-  if (is.null(ecol$session_id) || is.null(scol$id)) {
-    mask <- rep(FALSE, nrow(epochs))
-    if (return_mask) {
-      return(mask)
-    } else {
-      return(epochs[mask, ])
-    }
-  }
-
-  if (sum(epochs[[ecol$session_id]] %in% unique(sessions[[scol$id]])) == 0) {
+  if (sum(epochs$session_id %in% unique(sessions$id)) == 0) {
     cli::cli_warn(c("!" = "None of the epochs match the selected sessions.",
                     "i" = "Returning an empty epoch table."))
   }
 
-  mask <- epochs[[ecol$session_id]] %in% sessions[[scol$id]]
+  mask <- epochs$session_id %in% sessions$id
 
   # If there are unmatched session_ids, set mask to FALSE
   mask[is.na(mask)] <- FALSE
@@ -64,17 +53,16 @@ filter_epochs_from_sessions <- function(epochs, sessions, return_mask = FALSE) {
 #' filtered_sessions <- filter_by_night_range(example_sessions, "2025-04-07", "2025-04-10")
 filter_by_night_range <- function(sessions, from_night, to_night, return_mask = FALSE) {
   check_session_colnames(sessions, "night")
-  col <- get_session_colnames(sessions)
 
-  from_night <- if (is.null(from_night)) min(sessions[[col$night]]) else from_night
-  to_night <- if (is.null(to_night)) max(sessions[[col$night]]) else to_night
+  from_night <- if (is.null(from_night)) min(sessions$night) else parse_date(from_night)
+  to_night <- if (is.null(to_night)) max(sessions$night) else parse_date(to_night)
 
   if (from_night > to_night) {
     cli::cli_abort(c("!" = "from_night must be before to_night."))
   }
 
-  mask <- (sessions[[col$night]] >= lubridate::as_date(from_night) &
-             sessions[[col$night]] <= lubridate::as_date(to_night))
+  mask <- (sessions$night >= parse_date(from_night) &
+             sessions$night <= parse_date(to_night))
 
   mask[is.na(mask)] <- FALSE
 
@@ -103,17 +91,16 @@ filter_by_night_range <- function(sessions, from_night, to_night, return_mask = 
 #' filtered_sessions <- filter_by_age_range(example_sessions_v1, min_age = 11, max_age = 18)
 filter_by_age_range <- function(sessions, min_age = NULL, max_age = NULL, return_mask = FALSE) {
   check_session_colnames(sessions, c("birth_year", "night"))
-  col <- get_session_colnames(sessions)
 
-  min_age <- if (is.null(min_age)) min(lubridate::year(sessions[[col$night]]) - sessions[[col$birth_year]]) else min_age
-  max_age <- if (is.null(max_age)) max(lubridate::year(sessions[[col$night]]) - sessions[[col$birth_year]]) else max_age
+  min_age <- if (is.null(min_age)) min(lubridate::year(sessions$night) - sessions$birth_year) else min_age
+  max_age <- if (is.null(max_age)) max(lubridate::year(sessions$night) - sessions$birth_year) else max_age
 
   if (min_age > max_age) {
     cli::cli_abort(c("!" = "min_age must be before max_age."))
   }
 
-  mask <- (sessions[[col$birth_year]] >= (lubridate::year(sessions[[col$night]]) - max_age) &
-             sessions[[col$birth_year]] <= (lubridate::year(sessions[[col$night]]) - min_age))
+  mask <- (sessions$birth_year >= (lubridate::year(sessions$night) - max_age) &
+             sessions$birth_year <= (lubridate::year(sessions$night) - min_age))
 
   mask[is.na(mask)] <- FALSE
 
@@ -139,9 +126,8 @@ filter_by_age_range <- function(sessions, min_age = NULL, max_age = NULL, return
 #' filtered_sessions <- filter_by_sex(example_sessions_v1, "M")
 filter_by_sex <- function(sessions, sex, return_mask = FALSE) {
   check_session_colnames(sessions, "sex")
-  col <- get_session_colnames(sessions)
 
-  mask <- sessions[[col$sex]] %in% sex
+  mask <- sessions$sex %in% sex
 
   mask[is.na(mask)] <- FALSE
 
@@ -167,15 +153,14 @@ filter_by_sex <- function(sessions, sex, return_mask = FALSE) {
 #' filtered_sessions <- select_subjects(example_sessions, c("sub_01JNDH3Z5NP0PSV82NFBGPV31X"))
 select_subjects <- function(sessions, subject_ids, return_mask = FALSE) {
   check_session_colnames(sessions, "subject_id")
-  col <- get_session_colnames(sessions)
 
-  if (sum(sessions[[col$subject_id]] %in% subject_ids) == 0) {
+  if (sum(sessions$subject_id %in% subject_ids) == 0) {
     cli::cli_warn(c("!" = "None of the subject IDs were found in the sessions table.",
-                    "i" = "Available subject IDs: {unique(sessions[[col$subject_id]])}",
+                    "i" = "Available subject IDs: {unique(sessions$subject_id)}",
                     "i" = "Returning an empty sessions table."))
   }
 
-  mask <- sessions[[col$subject_id]] %in% subject_ids
+  mask <- sessions$subject_id %in% subject_ids
 
   mask[is.na(mask)] <- FALSE
 
@@ -201,15 +186,14 @@ select_subjects <- function(sessions, subject_ids, return_mask = FALSE) {
 #' filtered_sessions <- select_devices(example_sessions, c("VTGVSRTHCA"))
 select_devices <- function(sessions, device_ids, return_mask = FALSE) {
   check_session_colnames(sessions, "device_id")
-  col <- get_session_colnames(sessions)
 
-  if (sum(sessions[[col$device_id]] %in% device_ids) == 0) {
+  if (sum(sessions$device_id %in% device_ids) == 0) {
     cli::cli_warn(c("!" = "None of the device IDs were found in the sessions table.",
-                    "i" = "Available device IDs: {unique(sessions[[col$device_id]])}",
+                    "i" = "Available device IDs: {unique(sessions$device_id)}",
                     "i" = "Returning an empty sessions table."))
   }
 
-  mask <- sessions[[col$device_id]] %in% device_ids
+  mask <- sessions$device_id %in% device_ids
 
   mask[is.na(mask)] <- FALSE
 

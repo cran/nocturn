@@ -42,7 +42,7 @@ input_epochs_server <- function(id, common) {
         data <- load_epochs(input$epochs_file$datapath)
         common$logger |> write_log(paste0("Loaded session file: ", input$epochs_file$name), type = "complete")
       } else if (nrow(input$epochs_file) > 1) {
-        data <- load_batch(file_list = input$epochs_file$datapath, file_names = input$epochs_file$name, type = "epochs")
+        data <- load_batch(file_list = input$epochs_file$datapath, type = "epochs")
         common$logger |> write_log(paste0("Loaded ", nrow(input$epochs_file), " epoch files"), type = "complete")
       } else {
         return()
@@ -50,50 +50,26 @@ input_epochs_server <- function(id, common) {
       init_epochs(data, common)
     })
 
-    # Column names modal ----
-    shiny::observeEvent(input$open_epoch_col_names, {
-      shiny::req(common$epochs())
-      show_colnames_modal(
-        ns = ns,
-        colnames_list = colnames(common$epochs()),
-        current_map = get_colnames(common$epochs()),
-        type = "Epochs",
-        save_id = "save_epoch_col_names",
-        reset_id = "reset_epoch_col_names"
-      )
-    })
-
-    shiny::observeEvent(input$reset_epoch_col_names, {
-      epochs <- common$epochs()
-      attr(epochs, "col") <- NULL
-      col <- get_colnames(epochs)
-      common$epochs(set_colnames(epochs, col))
-      common$logger |> write_log("Reset epoch column names to default", type = "complete")
-      shiny::removeModal()
-    })
-
-    shiny::observeEvent(input$save_epoch_col_names, {
-      keys <- names(.epochs_long)
-      vals <- lapply(keys, function(key) {
-        val <- input[[paste0("col_", key)]]
-        if (identical(val, "-")) NULL else val
-      })
-      common$epochs(set_colnames(common$epochs(), stats::setNames(vals, keys)))
-      common$epochs(clean_epochs(common$epochs()))
-      common$logger |> write_log("Epoch column names saved", type = "complete")
-      shiny::removeModal()
-    })
-
+    register_colnames_modal(
+      input = input, session = session, ns = ns, common = common,
+      type = "epochs",
+      open_event = "open_epoch_col_names",
+      get_df = \() common$epochs(),
+      get_raw = \() common$epochs_raw(),
+      set_df = \(df) common$epochs(df)
+    )
   })
 }
 
 init_epochs <- function(epochs, common) {
   epochs$annotation <- ""
   common$epochs(epochs)
+  common$epochs_raw(epochs)
   common$epoch_filters(data.frame(from_sessions = rep(TRUE, nrow(epochs))))
 }
 
 clear_epochs <- function(common) {
   common$epochs(NULL)
+  common$epochs_raw(NULL)
   common$epoch_filters(NULL)
 }

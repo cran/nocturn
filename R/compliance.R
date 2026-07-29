@@ -12,9 +12,8 @@
 #' filtered_sessions <- set_min_time_in_bed(example_sessions, 2)
 set_min_time_in_bed <- function(sessions, min_time_in_bed, return_mask = FALSE) {
   check_session_colnames(sessions, "time_in_bed")
-  col <- get_session_colnames(sessions)
 
-  mask <- sessions[[col$time_in_bed]] >= min_time_in_bed * 60 * 60
+  mask <- sessions$time_in_bed >= min_time_in_bed * 60 * 60
 
   mask[is.na(mask)] <- FALSE
 
@@ -39,9 +38,8 @@ set_min_time_in_bed <- function(sessions, min_time_in_bed, return_mask = FALSE) 
 #' filtered_sessions <- set_min_sleep_period(example_sessions, 2)
 set_min_sleep_period <- function(sessions, min_sleep_period, return_mask = FALSE) {
   check_session_colnames(sessions, "sleep_period")
-  col <- get_session_colnames(sessions)
 
-  mask <- sessions[[col$sleep_period]] >= min_sleep_period * 60 * 60
+  mask <- sessions$sleep_period >= min_sleep_period * 60 * 60
 
   mask[is.na(mask)] <- FALSE
 
@@ -68,9 +66,8 @@ set_min_sleep_period <- function(sessions, min_sleep_period, return_mask = FALSE
 #' filtered_sessions <- set_session_start_time_range(example_sessions, "22:00", "06:00")
 set_session_start_time_range <- function(sessions, from_time, to_time, return_mask = FALSE) {
   check_session_colnames(sessions, "session_start")
-  col <- get_session_colnames(sessions)
 
-  session_times <- update_date(sessions[[col$session_start]], "0000-01-01")
+  session_times <- update_date(sessions$session_start, "0000-01-01")
   from_time <- if (is.null(from_time)) min(session_times) else parse_time(from_time)
   to_time <- if (is.null(to_time)) max(session_times) else parse_time(to_time)
 
@@ -106,13 +103,12 @@ set_session_start_time_range <- function(sessions, from_time, to_time, return_ma
 #' filtered_sessions <- set_session_sleep_onset_range(example_sessions, "22:00", "06:00")
 set_session_sleep_onset_range <- function(sessions, from_time, to_time, return_mask = FALSE) {
   check_session_colnames(sessions, "time_at_sleep_onset")
-  col <- get_session_colnames(sessions)
 
-  session_times <- update_date(sessions[[col$time_at_sleep_onset]], "0000-01-01")
+  session_times <- update_date(sessions$time_at_sleep_onset, "0000-01-01")
   from_time <- if (is.null(from_time)) min(session_times, na.rm = TRUE) else parse_time(from_time)
   to_time <- if (is.null(to_time)) max(session_times, na.rm = TRUE) else parse_time(to_time)
 
-  if (from_time <= to_time) {
+  if (from_time < to_time) {
     mask <- session_times >= from_time & session_times <= to_time
   } else {
     mask <- session_times >= from_time | session_times <= to_time
@@ -140,9 +136,8 @@ set_session_sleep_onset_range <- function(sessions, from_time, to_time, return_m
 #' filtered_sessions <- remove_sessions_no_sleep(example_sessions)
 remove_sessions_no_sleep <- function(sessions, return_mask = FALSE) {
   check_session_colnames(sessions, "sleep_period")
-  col <- get_session_colnames(sessions)
 
-  mask <- sessions[[col$sleep_period]] > 0
+  mask <- sessions$sleep_period > 0
 
   mask[is.na(mask)] <- FALSE
 
@@ -164,10 +159,9 @@ remove_sessions_no_sleep <- function(sessions, return_mask = FALSE) {
 #' @examples
 #' duplicate_sessions <- get_non_complying_sessions(example_sessions)
 get_non_complying_sessions <- function(sessions) {
-  check_session_colnames(sessions, "night")
-  col <- get_session_colnames(sessions)
-  dup_mask <- duplicated(sessions[, c(col$night, col$subject_id)]) |
-    duplicated(sessions[, c(col$night, col$subject_id)], fromLast = TRUE)
+  check_session_colnames(sessions, c("night", "subject_id"))
+  dup_mask <- duplicated(sessions[, c("night", "subject_id")]) |
+    duplicated(sessions[, c("night", "subject_id")], fromLast = TRUE)
   sessions[dup_mask, ]
 }
 
@@ -187,7 +181,6 @@ get_non_complying_sessions <- function(sessions) {
 get_removed_sessions <- function(sessions, filtered_sessions) {
   check_session_colnames(sessions, c("id", "sleep_period"))
   check_session_colnames(filtered_sessions, c("id", "sleep_period"))
-  col <- get_session_colnames(sessions)
 
   if (nrow(filtered_sessions) > nrow(sessions)) {
     cli::cli_abort(c(
@@ -197,6 +190,26 @@ get_removed_sessions <- function(sessions, filtered_sessions) {
     ))
   }
   sessions |>
-    dplyr::anti_join(filtered_sessions, by = col$id) |>
+    dplyr::anti_join(filtered_sessions, by = "id") |>
     remove_sessions_no_sleep()
+}
+
+#' Remove duplicate sessions by keeping only the longest
+#'
+#' @param sessions The sessions dataframe to process
+#' @details This function uses columns:
+#' - `night`
+#' - `sleep_period`
+#' @returns The sessions dataframe with duplicate sessions removed
+#' @importFrom rlang .data
+#' @export
+#' @family filtering
+#' @examples
+#' keep_longest(example_sessions)
+keep_longest <- function(sessions) {
+  check_session_colnames(sessions, c("night", "sleep_period"))
+  sessions |>
+    dplyr::arrange(dplyr::desc(.data$sleep_period)) |>
+    dplyr::distinct(.data$night, .keep_all = TRUE) |>
+    dplyr::arrange(.data$night)
 }

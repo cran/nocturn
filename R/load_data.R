@@ -53,10 +53,9 @@ load_sessions <- function(sessions_file) {
 #' Load epoch data
 #'
 #' @param epochs_file The path to the epochs file
-#' @param file_name An optional file name to be recorded in the epochs table
 #' @returns A dataframe containing the epoch data
 #' @details The function loads the epoch data from a file and groups the epochs by night.
-#' Supported formats: CSV, Excel, EDF.
+#' Supported formats: csv, xls, xlsx, edf
 #' @export
 #' @family data loading
 #' @importFrom rlang .data
@@ -64,7 +63,7 @@ load_sessions <- function(sessions_file) {
 #' tf <- tempfile(fileext = ".csv")
 #' utils::write.csv(data.frame(id = 1), tf, row.names = FALSE)
 #' load_epochs(tf)
-load_epochs <- function(epochs_file, file_name = NULL) {
+load_epochs <- function(epochs_file) {
   if (!file.exists(epochs_file)) {
     cli::cli_abort(c(
       "!" = "Epochs file not found: {.file {epochs_file}}",
@@ -99,25 +98,16 @@ load_epochs <- function(epochs_file, file_name = NULL) {
     return(NULL)
   }
 
-  if (is.null(file_name)) {
-    epochs$filename <- basename(epochs_file)
-  } else {
-    epochs$filename <- file_name
-  }
-
-  epochs <- epochs |>
+  epochs |>
     set_data_type("epochs") |>
     dplyr::mutate(dplyr::across(dplyr::where(is.character), ~dplyr::na_if(., ""))) |>
     clean_epochs()
-
-  epochs
 }
 
 #' Load session or epoch data in batch mode
 #'
 #' @param folder_path The path to the folder containing session files (do not use with file_list)
 #' @param file_list The list of file paths to load (do not use with folder_path)
-#' @param file_names An optional vector of file names corresponding to the files in file_list
 #' @param pattern An optional pattern to filter files in the folder
 #' @param type The type of data to load: "sessions" or "epochs"
 #' @returns A dataframe containing the combined session data from all matching files in the folder
@@ -129,7 +119,7 @@ load_epochs <- function(epochs_file, file_name = NULL) {
 #' utils::write.csv(data.frame(id = 1), tf1, row.names = FALSE)
 #' utils::write.csv(data.frame(id = 1), tf2, row.names = FALSE)
 #' load_batch(file_list = c(tf1, tf2))
-load_batch <- function(folder_path = NULL, file_list = NULL, file_names = NULL, pattern = NULL, type = "sessions") {
+load_batch <- function(folder_path = NULL, file_list = NULL, pattern = NULL, type = "sessions") {
   if (is.null(folder_path) && is.null(file_list)) {
     cli::cli_abort(c(
       "!" = "Either {.code folder_path} or {.code file_list} must be provided.",
@@ -168,22 +158,12 @@ load_batch <- function(folder_path = NULL, file_list = NULL, file_names = NULL, 
     if (type == "sessions")
       data <- load_sessions(f)
     else if (type == "epochs") {
-      if (!is.null(file_names)) {
-        fname <- file_names[which(all_files == f)]
-      } else {
-        fname <- NULL
-      }
-      data <- load_epochs(f, file_name = fname)
+      data <- load_epochs(f)
     } else {
       cli::cli_abort(c(
         "!" = "Unsupported data type: {.val {type}}",
         "i" = "Please use 'sessions' or 'epochs'."
       ))
-    }
-    if (is.null(file_names)) {
-      data$filename <- basename(f)
-    } else {
-      data$filename <- file_names[which(all_files == f)]
     }
     if (!is.null(data)) {
       all_data <- dplyr::bind_rows(all_data, data)

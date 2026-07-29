@@ -1,0 +1,30 @@
+---
+title: "Session timeseries"
+output: html_document
+---
+
+##### Data source
+
+Sessions
+
+##### Required columns
+
+- `night`
+
+##### Description
+
+Timeseries plot for any of the Sessions variables. Shows one dot per sleep session.
+
+##### Options
+
+###### Variable
+
+Variable to be plotted (y-axis). Supported variable types: categorical (text), numeric and datetime.
+
+###### Colour by
+
+Colour each session according to one of the dataset variables. Supported variable types: categorical (text), numeric and datetime.
+
+###### Exclude Zero Values
+
+When ticked, any point whose value is exactly 0 will be removed (useful when zeroes are spurious values or absence of data).

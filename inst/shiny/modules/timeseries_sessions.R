@@ -1,6 +1,7 @@
 timeseries_sessions_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
+    help_modal_ui(ns),
     shiny::fluidRow(
       shiny::column(4,
         shiny::selectInput(
@@ -48,10 +49,7 @@ timeseries_sessions_server <- function(id, common) {
       shiny::req(input$variable, common$sessions(), common$session_filters())
       sessions <- apply_filters(common$sessions(), common$session_filters()) |>
         annotate(common$annotations())
-      col <- get_colnames(common$sessions())
-      shiny::validate(
-        shiny::need(!is.null(col$night), "'night' column was not specified.")
-      )
+      validate_columns(sessions, "night")
       plot_timeseries_sessions(
         sessions = sessions,
         variable = input$variable,
@@ -74,5 +72,8 @@ timeseries_sessions_server <- function(id, common) {
       height = 6
     )
 
+    shiny::observeEvent(input$help, {
+      show_help_modal("Session_timeseries")
+    })
   })
 }

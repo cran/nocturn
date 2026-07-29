@@ -1,0 +1,16 @@
+---
+title: "Secondary datasets"
+output: html_document
+---
+
+This panel shows all currently loaded Sessions.
+
+To add a dataset, click on Browse (under "Add Sessions") and select one or several Sessions files.
+
+For each dataset, the following actions can be taken:
+
+- Rename: edit the dataset name in the "Name" column and press Enter (default name is the name of the loaded file)
+- Set column names: click on "Set" in the "Col names" column
+- Remove the dataset: click on "Clear"
+
+There is no limit to the number of datasets that can be loaded, though some panels may take longer to load if there are more than ~5 datasets (e.g. the Bland-Altman statistics tables).

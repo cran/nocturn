@@ -37,67 +37,8 @@ input_server <- function(id, common) {
     # Sessions ----
     input_sessions_server("sessions_input_panel", common)
 
-
     # Epochs ----
     input_epochs_server("epochs_input_panel", common)
 
   })
-}
-
-show_colnames_modal <- function(
-  ns,
-  colnames_list,
-  current_map,
-  type = "Sessions",
-  save_id = "save_col_names",
-  reset_id = "reset_col_names"
-) {
-  if (type == "Sessions") {
-    title <- "Set Session Column Names"
-    long_names <- .sessions_long
-    help_tips <- .sessions_help
-  } else if (type == "Epochs") {
-    title <- "Set Epoch Column Names"
-    long_names <- .epochs_long
-    help_tips <- .epochs_help
-  }
-  inputs <- lapply(names(long_names), function(key) {
-    current_value <- as.character(current_map[[key]])
-    if (is.null(current_map[[key]]) || is.na(current_map[[key]]) || current_map[[key]] == "-") current_value <- "-"
-    choices <- c("-", colnames_list)
-    label_text <- long_names[[key]] %||% key
-    help_text <- help_tips[[key]] %||% NULL
-    label <- shiny::tagList(
-      label_text,
-      if (!is.null(help_text)) bslib::tooltip(
-        shiny::tags$span(
-          shiny::icon("circle-info"),
-          class = "colnames-help"
-        ),
-        help_text,
-        placement = "right",
-        options = list(delay = list(show = 0, hide = 100))
-      )
-    )
-    shiny::selectInput(
-      inputId = ns(paste0("col_", key)),
-      label = label,
-      choices = choices,
-      selected = current_value
-    )
-  })
-  shiny::showModal(
-    shiny::modalDialog(
-      title = title,
-      size = "l",
-      easyClose = TRUE,
-      footer = shiny::tagList(
-        shiny::actionButton(ns(reset_id), "Reset", class = "delete-btn"),
-        shiny::modalButton("Cancel"),
-        shiny::actionButton(ns(save_id), "Save")
-      ),
-      shiny::p("Hint: type in the boxes to search for column names."),
-      do.call(shiny::tagList, inputs)
-    )
-  )
 }

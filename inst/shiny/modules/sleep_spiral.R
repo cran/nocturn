@@ -1,7 +1,7 @@
 sleep_spiral_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
-    shiny::HTML("<b>Requires Epoch data</b>"),
+    help_modal_ui(ns),
     shiny::selectInput(
       inputId = ns("colorby"),
       label = "Colour by:",
@@ -34,11 +34,7 @@ sleep_spiral_server <- function(id, common) {
       if (nrow(epochs) == 0) {
         return(NULL)
       }
-      col <- get_colnames(common$epochs())
-      shiny::validate(
-        shiny::need(!is.null(col$timestamp), "'timestamp' column was not specified."),
-        shiny::need(!is.null(col$is_asleep), "'is_asleep' column was not specified.")
-      )
+      validate_columns(epochs, c("timestamp", "is_asleep"))
       plot_sleep_spiral(
         epochs = epochs,
         color_by = input$colorby
@@ -59,5 +55,8 @@ sleep_spiral_server <- function(id, common) {
       height = 6
     )
 
+    shiny::observeEvent(input$help, {
+      show_help_modal("Sleep_spiral")
+    })
   })
 }

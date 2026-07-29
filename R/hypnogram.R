@@ -12,15 +12,13 @@
 #' plot_hypnogram(example_epochs)
 plot_hypnogram <- function(epochs) {
   check_epoch_colnames(epochs, c("timestamp", "sleep_stage"))
-  col <- get_epoch_colnames(epochs)
 
   hypnogram_data <- epochs |>
     dplyr::mutate(
-      timestamp = parse_time(.data[[col$timestamp]]),
-      sleep_stage_numeric = unclass(factor(.data[[col$sleep_stage]])) + 1,
+      sleep_stage_numeric = unclass(factor(.data$sleep_stage)) + 1,
       sleep_stage = factor(
-        .data[[col$sleep_stage]],
-        levels = sort(unique(.data[[col$sleep_stage]]))
+        .data$sleep_stage,
+        levels = sort(unique(.data$sleep_stage))
       )
     ) |>
     dplyr::group_by(timestamp = lubridate::floor_date(.data$timestamp, unit = "minute")) |>

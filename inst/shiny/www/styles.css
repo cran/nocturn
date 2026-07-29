@@ -1,136 +1,167 @@
 /* Main panel */
 .main-panel-wrapper {
-  min-height: 70vh;
-  max-height: 85vh;
-  overflow-y: auto;
+    min-height: 70vh;
+    max-height: 85vh;
+    overflow-y: auto;
 }
 
 /* Cards for side panel */
 .sidebar_card {
-  background-color: var(--bs-light-bg-subtle);
-  border-radius: 0.5rem;
+    background-color: var(--bs-light-bg-subtle);
+    border-radius: 0.5rem;
 }
 
 /* Side panel collapsing button */
 .sidebar-toggle-btn {
-  position: absolute;
-  top: 10px;
-  right: -20px;
-  z-index: 1000;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: absolute;
+    top: 10px;
+    right: -20px;
+    z-index: 1000;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Force some buttons to be small instead of taking up the whole width */
 .small-btn {
-  width: 50px !important;
-  min-width: 0 !important;
-  display: inline-block !important;
+    width: 50px !important;
+    min-width: 0 !important;
+    display: inline-block !important;
 }
 
 /* Make delete buttons red */
 .delete-btn {
-  background-color: #dc3545 !important;
-  color: white !important;
-  border: none !important;
+    background-color: #dc3545 !important;
+    color: white !important;
+    border: none !important;
+}
+
+/* Make filter set import/export buttons blue */
+.filter-sets-btn .btn {
+    background-color: #4a7fd4 !important;
+    color: white !important;
+    border: none !important;
 }
 
 /* Styling for selected folder text (batch upload) */
 .selected-folder {
-  border: 1px solid lightgrey;
-  width: 230px;
-  min-height: 38px;
-  align-items: center;
-  justify-content: start;
-  display: inline-block;
+    border: 1px solid lightgrey;
+    width: 230px;
+    min-height: 38px;
+    align-items: center;
+    justify-content: start;
+    display: inline-block;
 }
 
 /* Remove white space below top navbar */
 .container-fluid.html-fill-item.html-fill-container {
-  display: none !important;
+    display: none !important;
 }
 
 /* Help icon styling */
 .colnames-help {
-  color: #007bff;
-  cursor: help;
-  font-size: 1.5em;
-  vertical-align: middle;
-  margin-left: 6px;
+    color: #4a7fd4;
+    cursor: help;
+    font-size: 1.5em;
+    vertical-align: middle;
+    margin-left: 6px;
+}
+
+.help-btn {
+    color: #4a7fd4;
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
+.help-btn:hover {
+    color: #3b70c5;
 }
 
 /* Logger styling options */
 #logHeader {
-	position:relative;
-	min-height:90px;
-	background: inherit;
-	z-index:10;
+    position:relative;
+    min-height:90px;
+    background: inherit;
+    z-index:10;
 }
 #logContent {
-  position:absolute;
-  z-index: 5;
+    position:absolute;
+    z-index: 5;
 }
 #messageLog {
-  height:150px;
-  width:350px;
-  padding:5px;
-  overflow:auto;
-  border:1px solid black;
-  background: white
+    height:150px;
+    width:350px;
+    padding:5px;
+    overflow:auto;
+    border:1px solid black;
+    background: white
 }
 
 .log_start{
-  color:CornflowerBlue;
+    color:CornflowerBlue;
 }
 
 .log_end{
-  color:green;
+    color:green;
 }
 
 .log_info{
-  color:blue;
+    color:blue;
 }
 
 .log_warn{
-  color:orange;
+    color:orange;
 }
 
 .log_error{
-  color:red;
+    color:red;
 }
 
 /* Radio buttons for input selection */
 .btn.btn-outline-secondary{
-  border: 1px solid #999;
-  color: #6c757d;
-  background-color: #fff;
-  border-radius: 0.5rem;
-  overflow: hidden;
+    border: 1px solid #999;
+    color: #6c757d;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    overflow: hidden;
 }
 
 .btn-check:checked + .btn.btn-outline-secondary {
-  background-color: #999 !important;
-  color: #fff !important;
-  border: 1px solid #999 !important;
+    background-color: #999 !important;
+    color: #fff !important;
+    border: 1px solid #999 !important;
 }
 
 .btn.btn-outline-secondary:hover {
-  color: #6c757d;
-  border: 1px solid #999;
+    color: #6c757d;
+    border: 1px solid #999;
 }
 
 /* Drop-down menus text overflow (e.g. color by) */
 .selectize-control.single .selectize-input {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Hide filename box in filters upload fileInput */
+.filters-upload .form-control {
+  display: none !important;
+}
+
+.filters-upload .shiny-file-input-progress {
+  display: none !important;
+}
+
+/* Make the button fill the space left by the hidden text field */
+.filters-upload .input-group {
+  width: auto;
 }

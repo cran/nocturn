@@ -48,3 +48,11 @@ test_that("set_colnames sets the col attribute", {
   result <- attr(updated_sessions, "col")
   expect_equal(result$id, "custom_id")
 })
+
+test_that("colnames to canonical creates columns", {
+  attr(sessions, "type") <- "sessions"
+  sessions <- set_colnames(sessions, list(sleep_period = "custom_id"))
+  sessions <- colnames_to_canonical(sessions)
+
+  expect_true("sleep_period" %in% names(sessions))
+})

@@ -1,0 +1,23 @@
+---
+title: "Sleep Bubbles"
+output: html_document
+---
+
+##### Data source
+
+Sessions
+
+##### Required columns
+
+- `night`
+- `sleep_period`
+
+##### Description
+
+The Sleep bubbles display sleep duration for each sleep session. Each dot represents a session. Dots for sessions with less than 6 or more than 9 hours sleep are grey; dots for sessions between 6 and 9 hours sleep are coloured according to sleep duration (blue to green). The grey rectangle highlights the 6-9 hour sleep duration window.
+
+##### Options
+
+###### Colour by
+
+Colour each session according to one of the dataset variables. Supported variable types: categorical (text), numeric and datetime.

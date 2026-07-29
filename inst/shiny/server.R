@@ -46,6 +46,9 @@ function(input, output, session) {
   # Sleep regularity module
   sleep_regularity_server("sleep_regularity", common)
 
+  # Comparison module
+  comparison_server("comparison", common)
+
   # Export data module
   export_data_server("export_data", common)
 

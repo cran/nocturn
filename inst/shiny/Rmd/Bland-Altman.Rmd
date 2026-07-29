@@ -1,0 +1,29 @@
+---
+title: "Bland-Altman"
+output: html_document
+---
+
+##### Data source
+
+Sessions (2 datasets)
+
+##### Required columns
+
+- `night`
+- `sleep_period`
+
+##### Description
+
+Bland-Altman plot to compare multiple recordings of the same variable. Requires the two compared datasets to have nights in common.
+
+The Bland-Altman plot compares the difference between two measures to their average. The blue line shows the mean difference; the dotted lines show the 95% confidence interval for the difference. For more details, see [Bland-Altman plot on Wikipedia](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot).
+
+##### Options
+
+###### Sessions1, Sessions2
+
+The two datasets to be compared.
+
+###### Variable 1, Variable 2
+
+The variables to use from each dataset for the comparison. Typically, they would be the same in both dataset, but their name may vary.

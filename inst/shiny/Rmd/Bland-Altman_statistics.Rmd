@@ -1,0 +1,28 @@
+---
+title: "Bland-Altman statistics"
+output: html_document
+---
+
+##### Data source
+
+Sessions (multiple datasets)
+
+##### Required columns
+
+- `night`
+- `time_at_sleep_onset`
+- `time_at_midsleep`
+- `time_at_wakeup`
+- `sleep_period`
+
+##### Description
+
+This tab computes the Bland-Altman statistics (median difference and 95% confidence interval) for all loaded datasets against each other. The values are reported as "median (-95%CI; +95%CI)".
+
+The pairwise computation can take some time, especially if there are many datasets to compare (e.g. more than 5 datasets).
+
+If the tables start overlapping, try the following:
+
+- Give shorter names to your datasets
+- Make the nocturn window wider if possible
+- Collapse the nocturn side-bar (arrow at the top of the side-bar)

@@ -1,0 +1,32 @@
+---
+title: "Comparison timeseries"
+output: html_document
+---
+
+##### Data source
+
+Sessions (multiple)
+
+##### Required columns
+
+- `night`
+
+##### Description
+
+Timeseries plot for multiple sessions.
+
+##### Options
+
+###### Variable
+
+Variable to be plotted for the corresponding dataset. Supported variable types: numeric and datetime. Note that variable types must match between all displayed datasets (i.e. either all numerical, or all datetime).
+
+###### Display
+
+Whether to display the corresponding dataset in the plot.
+
+###### Keep only nights in common
+
+When ticked, points will only be plotted if there is a value for the same night in all other displayed datasets.
+
+When un-ticked, all available values are shown.

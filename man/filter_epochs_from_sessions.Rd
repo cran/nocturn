@@ -40,6 +40,7 @@ Other filtering:
 \code{\link[=filter_by_age_range]{filter_by_age_range()}},
 \code{\link[=filter_by_night_range]{filter_by_night_range()}},
 \code{\link[=filter_by_sex]{filter_by_sex()}},
+\code{\link[=keep_longest]{keep_longest()}},
 \code{\link[=remove_sessions_no_sleep]{remove_sessions_no_sleep()}},
 \code{\link[=select_devices]{select_devices()}},
 \code{\link[=select_subjects]{select_subjects()}},

@@ -1,17 +1,12 @@
-common <- list(
-  sessions = shiny::reactiveVal(example_sessions),
-  session_filters = shiny::reactiveVal(data.frame(no_sleep = rep(TRUE, nrow(example_sessions))))
-)
-
 test_that("sleep_bubbles module works", {
   shiny::testServer(
     sleep_bubbles_server,
-    args = list(common = common),
+    args = list(common = make_common()),
     {
-      plot <- session$getReturned()
-      session$setInputs(download_format = "png")
+      session$setInputs(download_format = "png",
+                        colorby = "default")
 
-      expect_s3_class(plot, "shiny.render.function")
+      expect_no_error(output$sleep_bubbles_plot)
     }
   )
 })
