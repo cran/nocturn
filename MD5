@@ -1,12 +1,12 @@
-af31696e4fb9b37d13ecf0b298d23aa7 *DESCRIPTION
+bfa13fa7109776f553415d4f64804726 *DESCRIPTION
 cd4878f2d2ac25f46f680d97fbc3e195 *LICENSE
-015930f0c0fa96949f4db359b566727b *NAMESPACE
-64c01490f599665a18e1858612fbbbb4 *NEWS.md
+67bb278fe08d8d96bfa97851650ed092 *NAMESPACE
+a79dc28da49e41eeb219815a26063805 *NEWS.md
 92ecaac112d9bf90632c378a02d065d0 *R/bedtimes_waketimes.R
 26fb16a4501e4d4f624795eef63252d9 *R/bland_altman.R
 a00c8837062cae63194d9a83a5dcf3a2 *R/check_suggests.R
 cd6608bec2cb926468ac605a25c3bc33 *R/colnames_accessors.R
-6b6abeb8a9f747bc886a05a49e9a8afc *R/colnames_key.R
+06a1b4c5771d3a77317796c330019afb *R/colnames_key.R
 1dc9259782571bd733511722f7847465 *R/compliance.R
 0afafbaf2ab61d513afa8702544d0e1b *R/data.R
 42a37c91ec4ad33c06e32486cf3ce466 *R/data_checks.R
@@ -29,7 +29,7 @@ e144227bdfcf3edadff338db24897e53 *R/sleep_spiral.R
 e014c7188ced7785e8d1872f93184f91 *R/time_utils.R
 a90242bc3638d49abe89e2f2762e56d8 *R/timeseries.R
 30de1f6455e21259dbc330f95a7f04b1 *R/timeseries_comparison.R
-f628071080e600fb7c6c11f680f36d29 *README.md
+54109efcfa3aadb51a074162125fc8b7 *README.md
 4637fb37ed901126fa2945a2933225e5 *data/example_epochs.rda
 7ca78b7246e89e9837ae265bad0ebd8c *data/example_epochs_v1.rda
 5df130aa21cb4a5c001525d9e15d4bbf *data/example_sessions.rda
@@ -152,7 +152,7 @@ d9233d05b43aefdd7f0d60db6e09c18c *man/min_time.Rd
 b9af3b044142f6ad2eab91fc00c646ba *man/parse_date.Rd
 670ebbd3420511c1f88a5d37780bf4f7 *man/parse_time.Rd
 544d6151c443ebe94462a59c01ee5371 *man/plot_bedtimes_waketimes.Rd
-881ca4c1ce1782658c1470ed813d9af8 *man/plot_bland_altman.Rd
+837a44a1af667ac4c64baebd180a1b46 *man/plot_bland_altman.Rd
 8ee51f92e61737cf99a71dc1b956548c *man/plot_hypnogram.Rd
 60f5d8e04931e5cbf5486508b276610e *man/plot_sleep_bubbles.Rd
 c8b42b6cd36355d266b9af89d0f5d04a *man/plot_sleep_clock.Rd

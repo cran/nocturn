@@ -49,4 +49,4 @@ Maintainer: [daniel.thedie@ed.ac.uk](mailto:daniel.thedie@ed.ac.uk)
 
 nocturn is developed by the [BioRDM team](https://biology.ed.ac.uk/research/facilities/research-data-management) at the University of Edinburgh, as part of the [Ambient-BD project](https://www.ambientbd.com/).
 
-This work was supported by Wellcome trust grant [226944/Z/23/Z](https://doi.org/10.35802/226944) awarded to Prof. Andrew Millar and others.
+This work was supported by Wellcome trust grant 226944/Z/23/Z awarded to Prof. Andrew Millar and others.

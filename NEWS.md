@@ -1,3 +1,9 @@
+# nocturn 1.2.1
+
+## Bug fixes
+
+* Set Column Names menu displays correctly
+
 # nocturn 1.2.0
 
 ## App

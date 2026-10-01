@@ -1,6 +1,6 @@
 Package: nocturn
 Title: Sleep Data Filtering and Visualisation
-Version: 1.2.0
+Version: 1.2.1
 Authors@R: 
   person(
     "Daniel",
@@ -24,9 +24,9 @@ URL: https://github.com/chronopsychiatry/AMBIENT-BD-nocturn
 BugReports: https://github.com/chronopsychiatry/AMBIENT-BD-nocturn/issues
 Config/roxygen2/version: 8.0.0
 NeedsCompilation: no
-Packaged: 2026-07-29 15:49:49 UTC; dthedie
+Packaged: 2026-10-01 09:05:10 UTC; dthedie
 Author: Daniel Thedie [aut, cre, cph] (ORCID:
     <https://orcid.org/0000-0002-1352-7245>)
 Maintainer: Daniel Thedie <daniel.thedie@ed.ac.uk>
 Repository: CRAN
-Date/Publication: 2026-07-29 16:30:11 UTC
+Date/Publication: 2026-10-01 10:30:02 UTC

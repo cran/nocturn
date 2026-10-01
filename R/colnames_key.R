@@ -3,6 +3,7 @@
 #' Long names for sessions columns, for display in app
 #' @returns A list matching canonical sessions column names to their long name
 #' @keywords internal
+#' @export
 .sessions_long <- list(
   id = "Session ID",
   subject_id = "Subject ID",
@@ -24,6 +25,7 @@
 #' Long names for epochs columns, for display in app
 #' @returns A list matching canonical epochs column names to their long name
 #' @keywords internal
+#' @export
 .epochs_long <- list(
   timestamp = "Timestamp",
   session_id = "Session ID",
@@ -38,6 +40,7 @@
 #' Help tooltips for sessions columns, for display in app
 #' @returns A list with a tooltip string for each canonical sessions column name
 #' @keywords internal
+#' @export
 .sessions_help <- list(
   id = "Unique identifier for each session.",
   subject_id = "Unique identifier for each subject.",
@@ -63,6 +66,7 @@
 #' Help tooltips for epochs columns, for display in app
 #' @returns A list with a tooltip string for each canonical epochs column name
 #' @keywords internal
+#' @export
 .epochs_help <- list(
   timestamp = "Timestamp of the epoch (YYYY-MM-DD HH:MM:SS).",
   session_id = "Identifier linking the epoch to a session in the sessions dataframe.",
@@ -77,6 +81,7 @@
 #' Preset values for session column names
 #' @returns A list of canonical session column names, where each value is an array of possible matching columns in the data (strings)
 #' @keywords internal
+#' @export
 .sessions_col_presets <- list(
   id = c("id", "session_id", "window_number"),
   subject_id = c("participant_id", "subject_id", "user_id", "ID"),
@@ -116,6 +121,7 @@
 #' Empty list of session column names used in nocturn
 #' @returns A list of canonical session column names with all values set to NULL
 #' @keywords internal
+#' @export
 .sessions_col_none <- list(
   id = NULL,
   subject_id = NULL,
@@ -139,6 +145,7 @@
 #' Preset values for epoch column names
 #' @returns A list of canonical epoch column names, where each value is an array of possible matching columns in the data (strings)
 #' @keywords internal
+#' @export
 .epochs_col_presets <- list(
   timestamp = c("timestamp", "timenum", "Time"),
   session_id = c("session_id", "window"),
@@ -161,6 +168,7 @@
 #' Empty list of epoch column names used in nocturn
 #' @returns A list of canonical epoch column names with all values set to NULL
 #' @keywords internal
+#' @export
 .epochs_col_none <- list(
   timestamp = NULL,
   session_id = NULL,
